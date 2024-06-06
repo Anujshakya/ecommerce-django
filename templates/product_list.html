@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}All Products{% endblock title %}
+
+{% block content %}
+<h2 class='text-primary mx-2'>All Products:</h2>
+<div class="container">
+    {% for product in object_list %}
+        <div class="card d-inline-block h-100 m-2" style="width: 18rem;">
+            <img src="{{ product.image.url }}" class="card-img-top" style="height: 18rem;" alt="Product-Image">
+            <div class="card-body">
+            <h5 class="card-title">{{ product.name }}</h5>
+            <p class="card-text">{{ product.description|truncatechars:100 }}</p>
+            <p class="card-text">Category: {{ product.category }}</p>
+
+
+            <form action="{% url 'add_to_cart' product.id %}" method="post">
+                {% csrf_token %}
+                <button class="btn btn-primary" type="submit">Add to Cart</button>
+            </form>
+
+
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock content %}
+
+{% block extra_scripts %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('.add-to-cart-form').on('submit', function(event) {
+        event.preventDefault();
+        var form = $(this);
+        var productId = form.data('product-id');
+        $.ajax({
+            type: 'POST',
+            url: '/add-to-cart/' + productId + '/',
+            data: {
+                'csrfmiddlewaretoken': form.find('input[name="csrfmiddlewaretoken"]').val()
+            },
+            success: function(response) {
+                alert(response.message);
+            },
+            error: function(response) {
+                alert('An error occurred. Please try again.');
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

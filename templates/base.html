@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block heading %}E-Commerce App{% endblock heading %}</title>
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}    
+
+    {% load crispy_forms_tags %}
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'home' %}">Navbar</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'cart_detail' %}">My Cart</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'order_detail' %}">My Orders</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link" href="{% url 'product_list' %}">Shop</a>
+                </li>                
+            </ul>
+            <form class="d-flex mx-4" role="search" action="{% url 'search_products' %}" method="get">
+                <input class="form-control me-2" type="text" placeholder="Search" aria-label="Search" name="searched_product">
+                <button class="btn btn-outline-primary" type="submit">Search</button>
+            </form>
+
+            {% if user.is_authenticated %}
+            <div class="nav-item dropdown mx-4">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  {{ user.username }}
+                </a>
+                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
+                    <a class="dropdown-item" href="{% url 'password_change'%}">Change password</a>
+                    <div class="dropdown-divider"></div>
+                    <form method="post" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button class="dropdown-item" type="submit">Log Out</button>
+                    </form>
+                </div>
+            </div>
+            {% else %}
+            <form class="form-inline mx-4">
+                <a href="{% url 'login' %}" class="btn btn-outline-secondary">
+                    Log In</a
+                >
+                <a href="{% url 'signup' %}" class="btn btn-primary ml-2"> Sign up</a>
+            </form>
+            {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    {% block content %}
+    {% endblock content %}
+
+    
+    {% block extra_scripts %}
+    {% endblock %}
+
+
+</body>
+</html>

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% load django_template_maths %}
+
+{% block title %}Order Detail{% endblock %}
+
+{% block content %}
+  <h2>Your Order</h2>
+  <ul>
+    {% for item in object_list %}
+      <li>
+        <h3>{{ item.product.name }}</h3>
+        <p>Price: {{ item.product.price }}</p>
+        <p>Quantity: {{ item.quantity }}</p>
+        <p>Total: {{ item.product.price|mul:item.quantity }}</p>
+      </li>
+    {% endfor %}
+  </ul>
+{% endblock %}

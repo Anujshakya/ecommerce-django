@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% load django_template_maths %}
+
+{% block title %}Cart Detail{% endblock %}
+
+{% block content %}
+  <h2>Your Cart</h2>
+  <ul>
+    {% for item in object_list %}
+      <li>
+        <h3>{{ item.product.name }}</h3>
+        <p>Price: {{ item.product.price }}</p>
+        <p>Quantity: {{ item.quantity }}</p>
+        <p>Total: {{ item.product.price|mul:item.quantity }}</p>
+      </li>
+
+      <form action="{% url 'cart' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="increment">
+        <input type="hidden" name="product_id" value="{{ item.product.id }}">
+        <button type="submit">Increment</button>
+      </form>
+      <form action="{% url 'cart' %}" method="post">
+          {% csrf_token %}
+          <input type="hidden" name="action" value="decrement">
+          <input type="hidden" name="product_id" value="{{ item.product.id }}">
+          <button type="submit">Decrement</button>
+      </form>
+      <form action="{% url 'cart' %}" method="post">
+          {% csrf_token %}
+          <input type="hidden" name="action" value="delete">
+          <input type="hidden" name="product_id" value="{{ item.product.id }}">
+          <button type="submit">Delete</button>
+      </form>
+    {% endfor %}
+    <form action="{% url 'checkout' %}" method="post">
+      {% csrf_token %}
+      <button class="btn btn-primary" type="submit">Checkout</button>
+    </form>
+  </ul>
+{% endblock %}
