@@ -6,10 +6,10 @@
 
 
 {% block content %}
-    <h2>Log In</h2>
-    <form method="post" class="mx-4">
+    <h2 class = "text-center">Log In</h2>
+    <form method="post" class="md-container mx-auto mt-4 border border-dark-subtle rounded-3 p-4">
         {% csrf_token %}
         {{ form|crispy }}
-        <button type="submit" class="btn btn-primary">Log In</button>
+        <button type="submit" class="btn btn-outline-dark text-white-hover">Log In</button>
     </form>
 {% endblock content %}

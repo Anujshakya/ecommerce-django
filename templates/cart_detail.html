@@ -5,8 +5,67 @@
 {% block title %}Cart Detail{% endblock %}
 
 {% block content %}
-  <h2>Your Cart</h2>
-  <ul>
+  {% if object_list %}
+  <h3 class = 'mb-4'>Your Cart</h3>
+
+  <table class="table text-center">
+    <thead>
+      <tr>
+        <th scope="col" class="text-start">Product Image</th>
+        <th scope="col">Product</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in object_list %}
+      <tr class="align-items-center">
+        <th scope="row" class="text-start">
+          <img src="{{ item.product.image.url }}" class="img-fluid rounded-start" style="height: 8rem;" alt="Product-image">
+        </th>
+        <td>{{ item.product.name }}</td>
+        <td class="text-center">
+          <div class="d-flex justify-content-center align-items-center">
+            
+            <form action="{% url 'cart' %}" method="post">
+              {% csrf_token %}
+              <input type="hidden" name="action" value="decrement">
+              <input type="hidden" name="product_id" value="{{ item.product.id }}">
+              <button type="submit" class="btn btn-border-dark">-</button>
+          </form>
+
+            {{ item.quantity }}
+
+            <form action="{% url 'cart' %}" method="post">
+              {% csrf_token %}
+              <input type="hidden" name="action" value="increment">
+              <input type="hidden" name="product_id" value="{{ item.product.id }}">
+              <button type="submit" class="btn btn-border-dark ">+</button>
+            </form>
+
+            
+          </div>
+          <form action="{% url 'cart' %}" method="post" class="mt-2">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="delete">
+            <input type="hidden" name="product_id" value="{{ item.product.id }}">
+            <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+          
+        
+        </td>
+        <td>{{ item.product.price }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <h3 class = 'mb-4'>No Items in the Cart</h3>
+  {% endif %}
+
+
+
+  {% comment %} <ul>
     {% for item in object_list %}
       <li>
         <h3>{{ item.product.name }}</h3>
@@ -33,10 +92,13 @@
           <input type="hidden" name="product_id" value="{{ item.product.id }}">
           <button type="submit">Delete</button>
       </form>
-    {% endfor %}
+    {% endfor %} 
+  </ul>{% endcomment %}
+    {% if object_list %}
     <form action="{% url 'checkout' %}" method="post">
       {% csrf_token %}
-      <button class="btn btn-primary" type="submit">Checkout</button>
+      <button class="btn btn-dark" type="submit">Checkout</button>
     </form>
-  </ul>
+    {% endif %}
+  
 {% endblock %}

@@ -6,10 +6,11 @@
 
 
 {% block content %}
-    <h2>Sign Up</h2>
-    <form method="post" class="mx-4">
+    <h2 class = "text-center">Sign Up</h2>
+
+    <form method="post" class="md-container mx-auto mt-4 border border-dark-subtle rounded-3 p-4">
         {% csrf_token %}
         {{ form|crispy }}
-        <button type="submit">Sign Up</button>
+        <button class="btn btn-outline-dark text-white-hover" type="submit">Sign Up</button>
     </form>
 {% endblock content %}

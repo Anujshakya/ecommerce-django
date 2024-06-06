@@ -5,30 +5,17 @@
 
 
 {% block content %}
-    {% comment %} {% if user.is_authenticated %}
-        Hi {{ user.username }}!
-
-        <form method="post" action="{% url 'logout' %}">
-            {% csrf_token %}
-            <p><button onclick="submit">Log Out</button></p>
-        </form>
-        
-    {% else %}
-        <p>You are not logged in</p>
-        <a href="{% url 'login' %}">Log In</a> |
-        <a href="{% url 'signup' %}">Sign Up</a>
-    {% endif %} {% endcomment %}
-
-    <h3 class='text-primary mx-2'>Categories:</h3>
+    <p class='fs-6 text-bold'>Categories:</p>
+    <h3 class = 'mb-4'>Browse By Category</h3>
 
     {% if category_list %}
     <div class="container">
         {% for category in category_list%}
-            <div class="card d-inline-block mx-1 my-1" style="width: 18rem;">
+            <div class="card d-inline-block mx-2" style="width: 18rem;">
                 <img src="{{ category.image.url }}" style="height: 18rem;" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5>{{ category.category }}</h5>
-                    <a class="btn btn-outline-primary mt-4" href="{% url 'filter' category.category %}">View Products</a>
+                <div class="card-body fw-bold mt-2">
+                    <p class='fs-6 text-bold'>{{ category.category }}</p>
+                    <a class="btn btn-outline-dark text-white-hover" href="{% url 'filter' category.category %}">View Products</a>
                 </div>
             </div>
         {% endfor %}

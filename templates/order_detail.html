@@ -6,7 +6,7 @@
 
 {% block content %}
   <h2>Your Order</h2>
-  <ul>
+  {% comment %} <ul>
     {% for item in object_list %}
       <li>
         <h3>{{ item.product.name }}</h3>
@@ -15,5 +15,38 @@
         <p>Total: {{ item.product.price|mul:item.quantity }}</p>
       </li>
     {% endfor %}
-  </ul>
+  </ul> {% endcomment %}
+
+  <table class="table text-center">
+    <thead>
+      <tr>
+        <th scope="col" class="text-start">Product Image</th>
+        <th scope="col">Product</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Price</th>
+        <th scope="col">Total Price</th>
+        <th scope="col">Delivery Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in object_list %}
+      <tr class="align-items-center">
+        <th scope="row" class="text-start">
+          <img src="{{ item.product.image.url }}" class="img-fluid rounded-start" style="height: 8rem;" alt="Product-image">
+        </th>
+        <td>{{ item.product.name }}</td>
+        <td>{{ item.quantity }}</td>
+        <td>{{ item.product.price }}</td>
+        <td>{{ item.product.price|mul:item.quantity }}</td>
+        <td>
+          {% if item.product.status %}
+            <span class="bg-success text-white p-2">Delivered</span>
+          {% else %}
+            <span class="bg-danger text-white p-2">Not Delivered</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 {% endblock %}
