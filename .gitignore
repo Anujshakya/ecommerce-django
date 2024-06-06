@@ -1,1 +1,4 @@
 /venv
+/cart/migrations
+/products/migrations
+/users/migrations
